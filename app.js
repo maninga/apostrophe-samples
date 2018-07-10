@@ -1,41 +1,17 @@
-var path = require('path');
+const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+const appName = process.env.APP_NAME || 'apostrophe-samples';
+const appTld = process.env.APP_TLD || 'devel';
+const baseUrl = appName.replace(/-/g, '.') + '.' + appTld;
 
-var apos = require('apostrophe')({
-  shortName: 'apostrophe-samples',
+const options = {
+  shortName: appName,
+  title: appName,
+  baseUrl: baseUrl,
+  modules: require('./config').modules
+};
 
-  // See lib/modules for basic project-level configuration of our modules
-  // responsible for serving static assets, managing page templates and
-  // configuring user acounts.
+if (process.env.APP_ROOT_DIR) {
+  options.rootDir = process.env.APP_ROOT_DIR;
+}
 
-  modules: {
-
-    // Apostrophe module configuration
-
-    // Note: most configuration occurs in the respective
-    // modules' directories. See lib/apostrophe-assets/index.js for an example.
-    
-    // However any modules that are not present by default in Apostrophe must at
-    // least have a minimal configuration here: `moduleName: {}`
-
-    // If a template is not found somewhere else, serve it from the top-level
-    // `views/` folder of the project
-
-    'apostrophe-templates': {
-      viewsFolderFallback: path.join(__dirname, 'views') 
-      // See also lib/modules/apostrophe-templates/index.js
-    },
-  
-    // see lib/modules/one-column-widgets/index.js, et cetera 
-    // Use index.js files for each module to keep app.js readable
-
-    'one-column-widgets': {},
-    'two-column-widgets': {},
-    'three-column-widgets': {},
-    'products': {},
-    'products-pages': {},
-    // People who specialize in various products
-    'specialists': {},
-    'specialists-pages': {},
-    'theme': {}
-  }
-});
+var apos = require('apostrophe')(options);
