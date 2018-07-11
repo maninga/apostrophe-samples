@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # Settings specific to the 'master' deployment target.
 # USER is the ssh user, SERVER is the ssh host. USER should
@@ -7,4 +7,3 @@
 
 USER=myuser
 SERVER=myserver.com
-
