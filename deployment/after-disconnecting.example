@@ -1,0 +1,13 @@
+#! /usr/bin/env bash
+
+# This script runs LOCALLY, AFTER the ssh connection to the server.
+# It is a fine place to cleanup working dir, to run some git commands,
+# or to remove some temporary files or directory created by before-connecting.
+
+TARGET="${1:-production}"
+
+source deployment/settings.$TARGET
+
+# Express should not reveal information on errors,
+# also optimizes Express performance
+export NODE_ENV=${NODE_ENV:-$TARGET}

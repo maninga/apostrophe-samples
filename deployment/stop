@@ -1,4 +1,12 @@
-#!/bin/bash
+#! /usr/bin/env bash
+
+TARGET="${1:-production}"
+
+source deployment/settings.$TARGET
+
+# Express should not reveal information on errors,
+# also optimizes Express performance
+export NODE_ENV=${NODE_ENV:-$TARGET}
 
 # Shut the site down, for instance by tweaking a .htaccess file to display
 # a 'please wait' notice, or stopping a node server

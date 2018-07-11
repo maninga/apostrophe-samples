@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 # Make the site live again, for instance by tweaking a .htaccess file
 # or starting a node server. In this example we also set up a
@@ -9,11 +9,15 @@
 # need traffic forwarded from a reverse proxy server on port 80
 
 # Useful for debugging
-#set -x verbose
+# set -x verbose
+
+TARGET="${1:-production}"
+
+source deployment/settings.$TARGET
 
 # Express should not reveal information on errors,
 # also optimizes Express performance
-export NODE_ENV=production
+export NODE_ENV=${NODE_ENV:-$TARGET}
 
 if [ ! -f "app.js" ]; then
   echo "I don't see app.js in the current directory."
@@ -59,5 +63,5 @@ done
 # node app.js >> data/console.log 2>&1 &
 # PID=$!
 # echo $PID > data/pid
-#	
+#
 #echo "Site started"

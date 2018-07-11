@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# This script runs LOCALLY, BEFORE the ssh connection to the server.
+# It is a fine place to rebuild assets with gulp and so on, avoiding
+# the need to install gulp in production.
+
 TARGET="${1:-production}"
 
 source deployment/settings.$TARGET
@@ -7,10 +11,3 @@ source deployment/settings.$TARGET
 # Express should not reveal information on errors,
 # also optimizes Express performance
 export NODE_ENV=${NODE_ENV:-$TARGET}
-
-# Run any necessary database migration tasks that should happen while the
-# site is paused here.
-
-node app apostrophe-migrations:migrate
-
-echo "Site migrated"
