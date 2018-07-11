@@ -6,6 +6,7 @@
 
 TARGET="${1:-production}"
 
+source deployment/settings
 source deployment/settings.$TARGET
 
 # Express should not reveal information on errors,
