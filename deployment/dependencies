@@ -19,12 +19,14 @@ export NODE_ENV=${NODE_ENV:-$TARGET}
 HERE=`pwd`
 mkdir -p ../../data
 ln -s ../../data $HERE/data
+
+# Move local.production.js to data/local.js if it exists
 if [ -f deployment/local.$TARGET.js ]; then
   mv deployment/local.$TARGET.js ./data/local.js
 fi
+
 # We also have a shared uploads folder which is convenient to keep
 # in a separate place so we don't have to have two express.static calls
-
 mkdir -p ../../uploads
 
 # Just in case this project has no assets yet and it's in git, which
@@ -41,12 +43,12 @@ ln -s ../../../uploads $HERE/public/uploads
 # This script runs after the rsync, but before the 'stop' script,
 # so your app is not down during the npm installation.
 
-# Make sure node_modules exists so npm doesn't go searching
-# up the filesystem tree
-mkdir -p node_modules
-
 # If there is no package.json file then we don't need npm install
 if [ -f './package.json' ]; then
+  # Make sure node_modules exists so npm doesn't go searching
+  # up the filesystem tree
+  mkdir -p node_modules
+
   # Install npm modules
   # Use a suitable version of Python
   # export PYTHON=/usr/bin/python26
@@ -59,7 +61,7 @@ fi
 
 # Run migrations that are safe for execution
 # while the previous deployment is still live
-node app apostrophe:migrate --safe
+node app apostrophe-migrations:migrate --safe
 
 # Generate new static asset files for this
 # deployment of the app without shutting down
